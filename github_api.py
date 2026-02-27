@@ -215,6 +215,43 @@ class GitHubAPI:
         yield data  # Yield single object
 
 
+    def request(self, method: str, url: str, params: typing.Optional[dict] = None) -> "requests.Response":
+        """
+        Perform HTTP request with retries, backoff and rate-limit handling.
+
+        :param method: HTTP method (GET, POST, etc.)
+        :param url: Full URL to request
+        :param params: Query parameters
+        :return: requests.Response on success
+        """
+
+        backoff = 1.0  # Initial backoff seconds
+        for attempt in range(8):  # Retry loop
+            try:  # Attempt request
+                resp = self.execute_single_request(method, url, params=params)  # Perform single request
+            except Exception:  # Network error (requests.RequestException)
+                time.sleep(backoff)  # Sleep before retry
+                backoff *= 2  # Exponential backoff
+                continue  # Retry
+
+            if self.is_rate_limited(resp):  # Rate limited
+                wait_seconds = self.compute_rate_limit_wait(resp, backoff)  # Compute wait
+                time.sleep(wait_seconds + 1)  # Sleep until reset
+                continue  # Retry after wait
+
+            if self.is_server_error(resp):  # Server error
+                time.sleep(backoff)  # Sleep then retry
+                backoff *= 2  # Increase backoff
+                continue  # Retry
+
+            if self.is_client_error(resp):  # Client error
+                raise RuntimeError(f"HTTP {resp.status_code} for {url}")  # Raise for 4xx
+
+            return resp  # Return successful response
+
+        raise RuntimeError("Max retries exceeded for URL: " + url)  # Give up after retries
+
+
 # Functions Definitions:
 
 
