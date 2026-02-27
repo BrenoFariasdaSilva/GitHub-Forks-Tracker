@@ -83,3 +83,8 @@ Icon? # match Icon<CR>
 **/ENV/
 **/env.bak/
 **/venv.bak/
+
+# Ignore the Auto Commiter Python Files
+**/class_block_functions_committer.py
+**/functions_committer.py
+**/readme_sections_committer.py
