@@ -78,3 +78,21 @@ Under the hood the tool is designed for reliability and forensic clarity: API ca
    git clone https://github.com/BrenoFariasDaSilva/GitHub-Forks-Tracker.git
    cd GitHub-Forks-Tracker
    ```
+
+### Python Installation
+
+Ensure Python 3.6 or higher is installed on your system:
+
+**Linux (Ubuntu/Debian):**
+```bash
+sudo apt update  # Update package lists
+sudo apt install python3 python3-pip python3-venv -y  # Install Python 3, pip, and venv
+```
+
+**macOS:**
+```bash
+brew install python3  # Using Homebrew
+```
+
+**Windows:**
+Download and install from [python.org](https://www.python.org/downloads/)
