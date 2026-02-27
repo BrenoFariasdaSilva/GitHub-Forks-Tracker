@@ -252,6 +252,32 @@ class GitHubAPI:
         raise RuntimeError("Max retries exceeded for URL: " + url)  # Give up after retries
 
 
+    def get_all_pages(self, url: typing.Optional[str], params: typing.Optional[dict] = None) -> typing.Iterator[dict]:
+        """
+        Yield items from paginated GitHub endpoints using `per_page=100` and Link headers.
+
+        :param url: Endpoint URL
+        :param params: Query parameters
+        :yield: Parsed JSON items one by one
+        """
+
+        params = dict(params or {})  # Copy params
+        params["per_page"] = 100  # Force 100 per page
+
+        while url:  # Walk pages
+            resp = self.request("GET", url, params=params)  # Perform request with retries
+            if resp.status_code == 404:  # Not found
+                return  # Stop iteration on 404
+
+            data = resp.json()  # Parse JSON body
+            for item in self.yield_items_from_data(data):  # Yield parsed items
+                yield item  # Yield each item
+
+            link = self.extract_link_header(resp)  # Extract Link header
+            next_url = self.parse_next_url(link) if link else None  # Determine next page
+            url = next_url  # Advance to next page
+
+
 # Functions Definitions:
 
 
