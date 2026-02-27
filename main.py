@@ -109,6 +109,31 @@ def verify_filepath_exists(filepath):
     return os.path.exists(filepath)  # Return True if the file or folder exists, False otherwise
 
 
+def create_env_from_example():
+    """
+    Create a `.env` file from `.env.example` when missing.
+
+    :param: None
+    :return: True if `.env` exists or was created successfully, False otherwise
+    """
+
+    example_path = Path(".env.example")  # Path to example file
+    target_path = Path(".env")  # Path to target .env
+    
+    if not verify_filepath_exists(example_path):  # Verify if example file exists
+        print(f"{BackgroundColors.CYAN}.env.example{BackgroundColors.GREEN} not found. Cannot create {BackgroundColors.CYAN}.env{Style.RESET_ALL}")  # Inform user
+        return False  # Signal failure
+
+    try:  # Attempt to copy contents
+        content = example_path.read_text(encoding="utf-8")  # Read example content
+        target_path.write_text(content, encoding="utf-8")  # Write .env file
+        print(f"{BackgroundColors.GREEN}Created {BackgroundColors.CYAN}.env{BackgroundColors.GREEN} from .env.example{Style.RESET_ALL}")  # Inform user
+        return True  # Success
+    except Exception as exc:  # On any error
+        print(f"{BackgroundColors.RED}Failed to create .env: {BackgroundColors.CYAN}{exc}{Style.RESET_ALL}")  # Inform user
+        return False  # Signal failure
+
+
 def parse_arguments():
     """
     Parse CLI arguments and return the parsed namespace.
