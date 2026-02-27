@@ -253,8 +253,6 @@ def process_single_fork(api: GitHubAPI, fork: dict, original_shas: typing.Set[st
     if not fork_owner or not fork_name:  # Skip malformed entries
         return  # Nothing to do
 
-    print(f"{BackgroundColors.GREEN}Processing fork {BackgroundColors.CYAN}{fork_owner}{BackgroundColors.GREEN}/{BackgroundColors.CYAN}{fork_name}{Style.RESET_ALL}")  # Log
-    
     try:  # Fetch fork commits
         fork_commits = api.list_commits(fork_owner, fork_name)  # All commits newest->oldest
     except Exception as exc:  # Handle inaccessible or deleted fork
@@ -264,11 +262,11 @@ def process_single_fork(api: GitHubAPI, fork: dict, original_shas: typing.Set[st
     divergent = find_divergent_commits(original_shas, fork_commits)  # Compute divergent commits
     
     if not divergent:  # No divergent commits
-        print(f"\t- {BackgroundColors.YELLOW}No divergent commits for {BackgroundColors.CYAN}{fork_owner}{BackgroundColors.YELLOW}/{BackgroundColors.CYAN}{fork_name}{Style.RESET_ALL}")  # Log
+        verbose_output(f"\t- {BackgroundColors.YELLOW}No divergent commits for {BackgroundColors.CYAN}{fork_owner}{BackgroundColors.YELLOW}/{BackgroundColors.CYAN}{fork_name}{Style.RESET_ALL}")  # Log
         return  # Nothing to export
 
     outpath = export_commits_csv(api, fork_name, fork_owner, divergent, outputs_dir)  # Write CSV
-    print(f"\t- {BackgroundColors.GREEN}Exported {BackgroundColors.CYAN}{len(divergent)}{BackgroundColors.GREEN} divergent commits to {BackgroundColors.CYAN}{outpath}{Style.RESET_ALL}")  # Log
+    verbose_output(f"\t- {BackgroundColors.GREEN}Exported {BackgroundColors.CYAN}{len(divergent)}{BackgroundColors.GREEN} divergent commits to {BackgroundColors.CYAN}{outpath}{Style.RESET_ALL}")  # Log
 
 
 def to_seconds(obj):
