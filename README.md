@@ -178,3 +178,23 @@ The tool produces CSV files in the specified output directory, one per fork that
 - `main.py`: CLI entrypoint that loads `.env`, parses CLI args, derives effective configuration (CLI > .env precedence), instantiates `GitHubAPI`, fetches forks and original commits, and dispatches fork processing.
 
 This README reflects the implemented CLI behaviour, logging, CSV exports, API pagination, and rate-limit handling present in the codebase.
+
+## How to Cite?
+
+If you use the GitHub-Forks-Tracker in your research, please cite it using the following BibTeX entry:
+
+```
+@misc{softwareGitHub-Forks-Tracker:2026,
+  title = {GitHub-Forks-Tracker: A lightweight CLI framework to analyze GitHub forks, detect divergent commits, and export results to CSV via the GitHub REST API},
+  author = {Breno Farias da Silva},
+  year = {2026},
+  howpublished = {https://github.com/BrenoFariasdaSilva/GitHub-Forks-Tracker},
+  note = {Accessed on February 27, 2026}
+}
+```
+
+Additionally, a `main.bib` file is available in the root directory of this repository, in which contains the BibTeX entry for this project.
+
+If you find this repository valuable, please don't forget to give it a ⭐ to show your support! Contributions are highly encouraged, whether by creating issues for feedback or submitting pull requests (PRs) to improve the project. For details on how to contribute, please refer to the [Contributing](#contributing) section below.
+
+Thank you for your support and for recognizing the contribution of this tool to your work!
