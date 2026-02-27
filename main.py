@@ -350,50 +350,49 @@ def main():
     try:  # Execute main processing using modular API + diff utilities
         api = GitHubAPI(token)  # Create API client
 
-        print(f"{BackgroundColors.GREEN}Listing forks for {BackgroundColors.CYAN}{original_owner}{BackgroundColors.GREEN}/{BackgroundColors.CYAN}{repo}{Style.RESET_ALL}")  # print(f"{BackgroundColors.GREEN}Listing forks for {BackgroundColors.CYAN}{original_owner}{BackgroundColors.GREEN}/{BackgroundColors.CYAN}{repo}{Style.RESET_ALL}")
-        try:  # try:
-            forks = api.list_forks(original_owner, repo)  # forks = api.list_forks(original_owner, repo)
-        except Exception as exc:  # except Exception as exc:
-            print(f"{BackgroundColors.RED}Failed to list forks: {BackgroundColors.YELLOW}{exc}{Style.RESET_ALL}")  # print(f"{BackgroundColors.RED}Failed to list forks: {BackgroundColors.YELLOW}{exc}{Style.RESET_ALL}")
-            return  # return
+        print(f"{BackgroundColors.GREEN}Listing forks for {BackgroundColors.CYAN}{original_owner}{BackgroundColors.GREEN}/{BackgroundColors.CYAN}{repo}{Style.RESET_ALL}")  # Output listing forks being processed
+        try:  # Attempt to list forks from the API
+            forks = api.list_forks(original_owner, repo)  # List forks from GitHub API
+        except Exception as exc:  # Handle forks listing failure
+            print(f"{BackgroundColors.RED}Failed to list forks: {BackgroundColors.YELLOW}{exc}{Style.RESET_ALL}")  # Print failure listing forks
+            return  # Return due to failure
 
-        if not forks:  # if not forks:
-            print(f"{BackgroundColors.YELLOW}No forks found for {BackgroundColors.CYAN}{original_owner}{BackgroundColors.GREEN}/{BackgroundColors.CYAN}{repo}{Style.RESET_ALL}")  # print(f"{BackgroundColors.YELLOW}No forks found for {BackgroundColors.CYAN}{original_owner}{BackgroundColors.GREEN}/{BackgroundColors.CYAN}{repo}{Style.RESET_ALL}")
-            return  # return
+        if not forks:  # If no forks were returned
+            print(f"{BackgroundColors.YELLOW}No forks found for {BackgroundColors.CYAN}{original_owner}{BackgroundColors.GREEN}/{BackgroundColors.CYAN}{repo}{Style.RESET_ALL}")  # Inform that no forks were found
+            return  # Return when no forks
 
-        print(f"{BackgroundColors.GREEN}Collecting commits from original repository {BackgroundColors.CYAN}{original_owner}/{repo}{BackgroundColors.GREEN}...{Style.RESET_ALL}")  # print(f"{BackgroundColors.GREEN}Collecting commits from original repository...{Style.RESET_ALL}")
-        try:  # try:
-            original_commits = api.list_commits(original_owner, repo)  # original_commits = api.list_commits(original_owner, repo)
-        except Exception as exc:  # except Exception as exc:
-            print(f"{BackgroundColors.RED}Failed to fetch original commits: {BackgroundColors.YELLOW}{exc}{Style.RESET_ALL}")  # print(f"{BackgroundColors.RED}Failed to fetch original commits: {BackgroundColors.YELLOW}{exc}{Style.RESET_ALL}")
-            return  # return
+        print(f"{BackgroundColors.GREEN}Collecting commits from original repository {BackgroundColors.CYAN}{original_owner}/{repo}{BackgroundColors.GREEN}...{Style.RESET_ALL}")  # Inform start of commit collection
+        try:  # Attempt to fetch commits from the original repository
+            original_commits = api.list_commits(original_owner, repo)  # Fetch original commits via API
+        except Exception as exc:  # Handle commit fetch failure
+            print(f"{BackgroundColors.RED}Failed to fetch original commits: {BackgroundColors.YELLOW}{exc}{Style.RESET_ALL}")  # Print failure fetching original commits
+            return  # Return due to failure
 
-        original_shas = build_original_sha_set(original_commits)  # original_shas = build_original_sha_set(original_commits)
+        original_shas = build_original_sha_set(original_commits)  # Build set of original commit SHAs
 
-        pbar = tqdm(forks, unit="fork", dynamic_ncols=True, file=sys.__stderr__, ncols=80)
-        for fork in pbar:  # Iterate over forks
+        pbar = tqdm(forks, unit="fork", dynamic_ncols=True, file=sys.__stderr__, ncols=80)  # Create tqdm progress bar
+        for fork in pbar:  # Iterate over each fork in the progress bar
             fork_owner = (fork.get("owner") or {}).get("login") or ""  # Fork Owner
             fork_name = fork.get("name") or ""  # Fork Name
-            # Build a safe, short description to avoid tqdm emitting multiple lines
-            try:
-                rel_path = f"{fork_owner}/{fork_name}"
-            except Exception:
-                rel_path = fork_name or str(fork)
-            if pbar is not None and hasattr(pbar, "set_description"):
-                pbar.set_description(f"{BackgroundColors.GREEN}Processing: {BackgroundColors.CYAN}{rel_path}{Style.RESET_ALL}")
-            process_single_fork(api, fork, original_shas, outputs_dir or OUTPUTS_DIR)  # Process the fork
-        if hasattr(pbar, "close"):
+            try:  # Build a safe, short description to avoid tqdm emitting multiple lines
+                rel_path = f"{fork_owner}/{fork_name}"  # Build relative path string
+            except Exception:  # Fallback when building rel_path fails
+                rel_path = fork_name or str(fork)  # Use fork_name or full fork string as fallback
+            if pbar is not None and hasattr(pbar, "set_description"):  # If progress bar supports set_description
+                pbar.set_description(f"{BackgroundColors.GREEN}Processing: {BackgroundColors.CYAN}{rel_path}{Style.RESET_ALL}")  # Set compact progress bar description
+            process_single_fork(api, fork, original_shas, outputs_dir or OUTPUTS_DIR)  # Process the fork and export divergent commits
+        if hasattr(pbar, "close"):  # If the progress bar exposes a close method
             pbar.close()  # Close the progress bar after processing all forks
     except Exception as exc:  # Catch and report unexpected errors
-        print(f"{BackgroundColors.RED}Unexpected error: {BackgroundColors.YELLOW}{exc}{Style.RESET_ALL}")  # Print error
+        print(f"{BackgroundColors.RED}Unexpected error: {BackgroundColors.YELLOW}{exc}{Style.RESET_ALL}")  # Print unexpected error
 
     finish_time = datetime.datetime.now()  # Get the finish time of the program
     
     print(
-        f"{BackgroundColors.GREEN}Start time: {BackgroundColors.CYAN}{start_time.strftime('%d/%m/%Y - %H:%M:%S')}\n{BackgroundColors.GREEN}Finish time: {BackgroundColors.CYAN}{finish_time.strftime('%d/%m/%Y - %H:%M:%S')}\n{BackgroundColors.GREEN}Execution time: {BackgroundColors.CYAN}{calculate_execution_time(start_time, finish_time)}{Style.RESET_ALL}"
+        f"{BackgroundColors.GREEN}Start time: {BackgroundColors.CYAN}{start_time.strftime('%d/%m/%Y - %H:%M:%S')}\n{BackgroundColors.GREEN}Finish time: {BackgroundColors.CYAN}{finish_time.strftime('%d/%m/%Y - %H:%M:%S')}\n{BackgroundColors.GREEN}Execution time: {BackgroundColors.CYAN}{calculate_execution_time(start_time, finish_time)}{Style.RESET_ALL}",
     )  # Output the start and finish times
     print(
-        f"{BackgroundColors.BOLD}{BackgroundColors.GREEN}Program finished.{Style.RESET_ALL}"
+        f"{BackgroundColors.BOLD}{BackgroundColors.GREEN}Program finished.{Style.RESET_ALL}",
     )  # Output the end of the program message
     (
         atexit.register(play_sound) if RUN_FUNCTIONS["Play Sound"] else None
