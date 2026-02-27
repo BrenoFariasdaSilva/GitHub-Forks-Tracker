@@ -104,6 +104,25 @@ def verify_filepath_exists(filepath):
     return os.path.exists(filepath)  # Return True if the file or folder exists, False otherwise
 
 
+def build_original_sha_set(original_commits: "list") -> "set[str]":
+    """
+    Build a set of SHA hashes from original commits.
+
+    :param original_commits: List of commit dictionaries from original repository
+    :return: Set of commit SHA strings
+    """
+
+    original_shas: set = set()  # Initialize SHA set
+    
+    for commit in original_commits:  # Iterate commits
+        sha = commit.get("sha")  # Extract SHA
+        
+        if isinstance(sha, str):  # Ensure string
+            original_shas.add(sha)  # Add SHA to set
+            
+    return original_shas  # Return SHA set
+
+
 def find_divergent_commits(original_shas: "set[str]", fork_commits: "list") -> "list":
     """
     Return commits present in `fork_commits` but not in `original_shas` preserving chronological order.
