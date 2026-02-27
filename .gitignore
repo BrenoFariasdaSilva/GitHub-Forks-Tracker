@@ -88,3 +88,6 @@ Icon? # match Icon<CR>
 **/class_block_functions_committer.py
 **/functions_committer.py
 **/readme_sections_committer.py
+
+# Ignore the Main Template Python File
+**/main-template.py
