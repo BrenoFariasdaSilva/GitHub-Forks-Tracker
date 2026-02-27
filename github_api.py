@@ -160,6 +160,17 @@ class GitHubAPI:
         return resp.status_code >= 500  # Server error verify
 
 
+    def is_client_error(self, resp: "requests.Response") -> bool:
+        """
+        Verify if response is a client-side error (4xx).
+
+        :param resp: Response object
+        :return: True if client error
+        """
+
+        return resp.status_code >= 400  # Client error verify
+
+
 # Functions Definitions:
 
 
