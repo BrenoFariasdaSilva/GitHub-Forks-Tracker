@@ -67,3 +67,14 @@ Under the hood the tool is designed for reliability and forensic clarity: API ca
 - Python 3.8+ (tested on the environment used for development)
 - A GitHub personal access token with repository read access (`GITHUB_TOKEN`)
 - Dependencies listed in `requirements.txt` (colorama, python-dotenv, requests)
+
+## Setup
+
+### Clone the repository
+
+1. Clone the repository with the following command:
+
+   ```bash
+   git clone https://github.com/BrenoFariasDaSilva/GitHub-Forks-Tracker.git
+   cd GitHub-Forks-Tracker
+   ```
