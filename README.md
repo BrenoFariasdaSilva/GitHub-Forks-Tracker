@@ -113,3 +113,29 @@ python -m venv venv
 source venv/bin/activate  # On Windows: venv\Scripts\activate
 pip install -r requirements.txt
 ```
+
+## Usage
+
+The CLI is implemented in `main.py`. Configuration is read from a local `.env` file (loaded via `python-dotenv`) and may be overridden by command line arguments. Command-line options follow this precedence: explicit CLI arguments override values present in `.env`.
+
+Primary CLI options:
+- `--repo-url`: full GitHub repository URL (overrides `--original-owner` +
+  `--repo` and `REPO_URL` in the environment)
+- `--original-owner`: original repository owner (overrides `ORIGINAL_OWNER`)
+- `--repo`: repository name (overrides `REPO`)
+- `--token`: GitHub token (overrides `GITHUB_TOKEN`)
+- `--outputs`: outputs directory (default: `./Outputs/`)
+
+Examples:
+
+```bash
+# Use a full repo URL and a token from the environment or CLI
+python main.py --repo-url https://github.com/originalOwner/repo --token "$GITHUB_TOKEN"
+
+# Or specify owner and repo separately
+python main.py --original-owner originalOwner --repo repo --outputs ./Outputs/
+```
+
+Notes:
+- The `GITHUB_TOKEN` must be available via `.env` or `--token` for API access.
+- If `--repo-url` is provided it takes precedence over `--original-owner` + `--repo`.
