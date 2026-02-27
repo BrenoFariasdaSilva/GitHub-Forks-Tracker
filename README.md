@@ -139,3 +139,18 @@ python main.py --original-owner originalOwner --repo repo --outputs ./Outputs/
 Notes:
 - The `GITHUB_TOKEN` must be available via `.env` or `--token` for API access.
 - If `--repo-url` is provided it takes precedence over `--original-owner` + `--repo`.
+
+## Results
+
+The tool produces CSV files in the specified output directory, one per fork that contains divergent commits. Each CSV file includes metadata about the divergent commits (SHA, date, author, message) and a URL pointing to the commit in the fork repository. The tool also logs progress and API interactions to both the terminal and log files under `./Logs/`.
+
+### Output behaviour and CSV format
+
+- Output directory: by default results are written to `./Outputs/` (created automatically when a CSV is written). The directory can be changed with `--outputs` or by setting `OUTPUTS` in the environment.
+- CSV files are created only for forks that contain divergent commits (no file is produced when a fork has zero divergent commits).
+- CSV filename format: `{fork_name}-{fork_owner}-{N}.csv` where `N` is the number of divergent commits exported for that fork (see `commits_diff.export_commits_csv`).
+- CSV columns (header):
+
+  `["Commit Number", "Commit Hash", "Commit Date", "Commit Owner", "Commit Message", "Commit URL"]`
+
+  `Commit Number` is sequential (oldest → newest), `Commit Hash` is the SHA, `Commit Date` is the commit ISO date from the GitHub API, `Commit Owner` is the author name (or `Unknown` when absent), and `Commit URL` is a fully-qualified GitHub URL pointing to the commit in the fork repository.
