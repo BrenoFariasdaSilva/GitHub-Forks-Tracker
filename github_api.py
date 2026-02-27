@@ -199,6 +199,22 @@ class GitHubAPI:
         return None  # No next link
 
 
+    def yield_items_from_data(self, data: typing.Any) -> typing.Iterator[dict]:
+        """
+        Yield items from parsed JSON data (list or single object).
+
+        :param data: Parsed JSON payload
+        :return: Iterator of items
+        """
+
+        if isinstance(data, list):  # If list of items
+            for item in data:  # Iterate list
+                yield item  # Yield each
+            return  # End generator
+        
+        yield data  # Yield single object
+
+
 # Functions Definitions:
 
 
