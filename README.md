@@ -8,7 +8,9 @@
   
 ---
 
-A lightweight CLI framework to analyze GitHub forks, detect divergent commits, and export results to CSV via the GitHub REST API.
+[GitHub-Forks-Tracker.](https://github.com/BrenoFariasdaSilva/GitHub-Forks-Tracker) is a compact, command-line Python utility that automates discovering and exporting commits present in forks but missing from an original GitHub repository. The project is organized into modular components: `github_api.py` implements a resilient REST client with paginated requests (using `per_page=100`), Link-header parsing, retry/backoff logic and rate-limit wait handling; `commits_diff.py` contains the core diff logic that builds a set of original SHAs, identifies divergent commits (preserving chronological order oldest→newest), and writes CSV reports with commit metadata and URLs; and `main.py` provides a friendly CLI entrypoint that loads configuration from `.env` (via python-dotenv), accepts overrides (`--repo-url` or `--original-owner` + `--repo`, `--token`, `--outputs`) and orchestrates the workflow. Output is written to the `Outputs` directory as CSV files (one per fork with divergences) and the project includes logging via the Logger helper and terminal-friendly coloring via colorama.
+
+Under the hood the tool is designed for reliability and forensic clarity: API calls handle transient 5xx failures and wait for `X-RateLimit-Reset` when GitHub limits are reached, JSON responses are normalized into item streams, and CSV exports include a stable header and commit URL generation so results are immediately actionable. Typical use cases include repository maintainers auditing forks, security researchers tracking injected commits, or teams migrating or pruning forks; the codebase is intentionally small and extensible so you can add features like parallel fork processing, richer CSV fields, or integration with issue trackers. Dependencies are minimal (`requests`, `python-dotenv`, `colorama`) and the CLI is ready to run locally after setting `GITHUB_TOKEN` and providing the target repository.
   
 ---
 
