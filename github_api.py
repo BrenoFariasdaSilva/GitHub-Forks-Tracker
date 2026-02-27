@@ -30,7 +30,10 @@ import atexit  # For playing a sound when the program finishes
 import datetime  # For getting the current date and time
 import os  # For running a command in the terminal
 import platform  # For getting the operating system name
+import requests  # Local import to avoid modifying top-level template
 import sys  # For system-specific parameters and functions
+import time  # For sleeping between retries
+import typing  # For type hints
 from colorama import Style  # For coloring the terminal
 from Logger import Logger  # For logging output to both terminal and file
 from pathlib import Path  # For handling file paths
