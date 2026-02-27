@@ -83,6 +83,7 @@ class GitHubAPI:
     :return: None
     """
 
+
     def __init__(self, token: str) -> None:
         """
         Initialize the GitHubAPI client with an optional token for authentication.
@@ -97,6 +98,19 @@ class GitHubAPI:
             self.session.headers.update({"Authorization": f"Bearer {token}"})  # Set auth header
         
         self.session.headers.update({"Accept": "application/vnd.github.v3+json"})  # Use REST v3
+
+
+    def execute_single_request(self, method: str, url: str, params: typing.Optional[dict] = None) -> "requests.Response":
+        """
+        Execute a single HTTP request and return the response.
+
+        :param method: HTTP method
+        :param url: Full URL
+        :param params: Query parameters
+        :return: requests.Response
+        """
+
+        return self.session.request(method, url, params=params, timeout=20)  # Perform request
 
 
 # Functions Definitions:
