@@ -296,6 +296,24 @@ class GitHubAPI:
         return items  # Return forks
 
 
+    def list_commits(self, owner: str, repo: str) -> typing.List[dict]:
+        """
+        Retrieve all commits for a repository using GET /repos/{owner}/{repo}/commits.
+
+        :param owner: Repository owner
+        :param repo: Repository name
+        :return: List of commits (newest first as returned by GitHub)
+        """
+
+        url = f"https://api.github.com/repos/{owner}/{repo}/commits"  # Commits endpoint
+        commits: typing.List[dict] = []  # Collection
+        
+        for item in self.get_all_pages(url):  # Iterate items
+            commits.append(item)  # Append commit
+        
+        return commits  # Return list
+
+
 # Functions Definitions:
 
 
