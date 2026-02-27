@@ -113,6 +113,20 @@ class GitHubAPI:
         return self.session.request(method, url, params=params, timeout=20)  # Perform request
 
 
+    def is_rate_limited(self, resp: "requests.Response") -> bool:
+        """
+        Verify if response indicates a rate limit has been reached.
+
+        :param resp: Response object
+        :return: True if rate limited
+        """
+
+        remaining = resp.headers.get("X-RateLimit-Remaining")  # Remaining calls
+        reset = resp.headers.get("X-RateLimit-Reset")  # Reset epoch
+        
+        return resp.status_code == 403 and remaining == "0" and bool(reset)  # Rate limited verify
+
+
 # Functions Definitions:
 
 
