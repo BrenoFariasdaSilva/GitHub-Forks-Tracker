@@ -104,6 +104,41 @@ def verify_filepath_exists(filepath):
     return os.path.exists(filepath)  # Return True if the file or folder exists, False otherwise
 
 
+def process_single_fork(api: GitHubAPI, fork: dict, original_shas: typing.Set[str], outputs_dir: str) -> None:
+    """
+    Process a single fork: fetch commits, compute divergence and export CSV.
+
+    :param api: GitHubAPI client instance
+    :param fork: Fork metadata dictionary
+    :param original_shas: Set of original repository SHAs
+    :param outputs_dir: Directory to write CSV outputs
+    :return: None
+    """
+
+    fork_owner = (fork.get("owner") or {}).get("login") or ""  # Fork owner
+    fork_name = fork.get("name") or ""  # Fork repo name
+    
+    if not fork_owner or not fork_name:  # Skip malformed entries
+        return  # Nothing to do
+
+    print(f"{BackgroundColors.GREEN}Processing fork {BackgroundColors.CYAN}{fork_owner}{BackgroundColors.GREEN}/{BackgroundColors.CYAN}{fork_name}{Style.RESET_ALL}")  # Log
+    
+    try:  # Fetch fork commits
+        fork_commits = api.list_commits(fork_owner, fork_name)  # All commits newest->oldest
+    except Exception as exc:  # Handle inaccessible or deleted fork
+        print(f"\t- {BackgroundColors.YELLOW}Skipping fork {BackgroundColors.CYAN}{fork_owner}{BackgroundColors.YELLOW}/{BackgroundColors.CYAN}{fork_name}{BackgroundColors.YELLOW}, error: {exc}{Style.RESET_ALL}")  # Log
+        return  # Skip
+
+    divergent = find_divergent_commits(original_shas, fork_commits)  # Compute divergent commits
+    
+    if not divergent:  # No divergent commits
+        print(f"\t- {BackgroundColors.YELLOW}No divergent commits for {BackgroundColors.CYAN}{fork_owner}{BackgroundColors.YELLOW}/{BackgroundColors.CYAN}{fork_name}{Style.RESET_ALL}")  # Log
+        return  # Nothing to export
+
+    outpath = export_commits_csv(api, fork_name, fork_owner, divergent, outputs_dir)  # Write CSV
+    print(f"\t- {BackgroundColors.GREEN}Exported {BackgroundColors.CYAN}{len(divergent)}{BackgroundColors.GREEN} divergent commits to {BackgroundColors.CYAN}{outpath}{Style.RESET_ALL}")  # Log
+
+
 def to_seconds(obj):
     """
     Converts various time-like objects to seconds.
