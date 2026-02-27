@@ -149,6 +149,17 @@ class GitHubAPI:
         return max(1, reset_int - int(time.time()))  # Compute wait seconds
 
 
+    def is_server_error(self, resp: "requests.Response") -> bool:
+        """
+        Verify if response is a server-side error (5xx).
+
+        :param resp: Response object
+        :return: True if server error
+        """
+
+        return resp.status_code >= 500  # Server error verify
+
+
 # Functions Definitions:
 
 
