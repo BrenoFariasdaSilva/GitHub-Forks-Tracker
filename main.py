@@ -109,6 +109,25 @@ def verify_filepath_exists(filepath):
     return os.path.exists(filepath)  # Return True if the file or folder exists, False otherwise
 
 
+def parse_arguments():
+    """
+    Parse CLI arguments and return the parsed namespace.
+
+    :param: None
+    :return: argparse.Namespace with parsed CLI arguments
+    """
+
+    parser = argparse.ArgumentParser(description="Export divergent commits from forks")  # CLI parser
+    
+    parser.add_argument("--repo-url", help="Full GitHub repository URL (overrides owner+repo)", required=False)  # Repo URL
+    parser.add_argument("--original-owner", help="Original repository owner", required=False)  # Owner
+    parser.add_argument("--repo", help="Repository name", required=False)  # Repo name
+    parser.add_argument("--token", help="GitHub token", required=False)  # Token
+    parser.add_argument("--outputs", help="Outputs directory", default="./Outputs/", required=False)  # Outputs dir
+    
+    return parser.parse_args()  # Parse and return CLI args
+
+
 def parse_repo_url(repo_url):
     """
     Parse a GitHub repository URL into (owner, repo).
