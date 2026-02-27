@@ -1,6 +1,6 @@
 <div align="center">
   
-# [GitHub-Forks-Tracker.](https://github.com/BrenoFariasdaSilva/GitHub-Forks-Tracker) <img src="Icon-Image-URL"  width="3%" height="3%">
+# [GitHub-Forks-Tracker.](https://github.com/BrenoFariasdaSilva/GitHub-Forks-Tracker) <img src="https://github.com/BrenoFariasdaSilva/GitHub-Forks-Tracker/blob/main/.assets/Images/Github.svg"  width="3%" height="3%">
 
 </div>
 
