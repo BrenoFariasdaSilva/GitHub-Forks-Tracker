@@ -163,3 +163,10 @@ The tool produces CSV files in the specified output directory, one per fork that
   `- Exported <N> divergent commits to <OutputsPath>`
 
   when a CSV is successfully written.
+
+### API behaviour and robustness
+
+- Pagination: API requests use `per_page=100` and the `Link` header is parsed to follow `next` pages until the full result set is retrieved.
+- Rate-limits: the client reads `X-RateLimit-Remaining` and `X-RateLimit-Reset` from responses and detects a rate-limited response (403 with remaining == "0"). The client computes the seconds until reset and waits the required time before continuing.
+- Retry/backoff: transient server errors (5xx) are retried with a backoff strategy (the client implements retry loops and delays for robustness).
+- Requests are executed using a `requests.Session()` with a default timeout (20s) and the `Accept: application/vnd.github.v3+json` header.
