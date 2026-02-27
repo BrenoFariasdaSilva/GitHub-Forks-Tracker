@@ -171,6 +171,17 @@ class GitHubAPI:
         return resp.status_code >= 400  # Client error verify
 
 
+    def extract_link_header(self, resp: "requests.Response") -> typing.Optional[str]:
+        """
+        Extract the Link header from a response if present.
+
+        :param resp: Response object
+        :return: Link header string or None
+        """
+
+        return resp.headers.get("Link")  # Return Link header
+
+
 # Functions Definitions:
 
 
