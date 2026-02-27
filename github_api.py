@@ -278,6 +278,24 @@ class GitHubAPI:
             url = next_url  # Advance to next page
 
 
+    def list_forks(self, owner: str, repo: str) -> typing.List[dict]:
+        """
+        List forks for a repository using GET /repos/{owner}/{repo}/forks.
+
+        :param owner: Original repository owner
+        :param repo: Repository name
+        :return: List of fork repository dicts
+        """
+
+        url = f"https://api.github.com/repos/{owner}/{repo}/forks"  # Forks endpoint
+        items: typing.List[dict] = []  # Collect forks
+        
+        for item in self.get_all_pages(url):  # Iterate pages
+            items.append(item)  # Append fork
+        
+        return items  # Return forks
+
+
 # Functions Definitions:
 
 
