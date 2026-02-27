@@ -127,6 +127,28 @@ class GitHubAPI:
         return resp.status_code == 403 and remaining == "0" and bool(reset)  # Rate limited verify
 
 
+    def compute_rate_limit_wait(self, resp: "requests.Response", fallback: float) -> int:
+        """
+        Compute seconds to wait until rate limit reset, fallback on error.
+
+        :param resp: Response object
+        :param fallback: Fallback seconds
+        :return: Seconds to wait
+        """
+
+        reset = resp.headers.get("X-RateLimit-Reset")  # Reset epoch
+        
+        if reset is None:  # Missing header
+            return int(fallback)  # Fallback to backoff
+        
+        try:  # Attempt to parse reset time
+            reset_int = int(reset)  # Convert reset to int
+        except Exception:  # Parse error
+            return int(fallback)  # Fallback to backoff on parse error
+        
+        return max(1, reset_int - int(time.time()))  # Compute wait seconds
+
+
 # Functions Definitions:
 
 
