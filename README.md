@@ -154,3 +154,12 @@ The tool produces CSV files in the specified output directory, one per fork that
   `["Commit Number", "Commit Hash", "Commit Date", "Commit Owner", "Commit Message", "Commit URL"]`
 
   `Commit Number` is sequential (oldest → newest), `Commit Hash` is the SHA, `Commit Date` is the commit ISO date from the GitHub API, `Commit Owner` is the author name (or `Unknown` when absent), and `Commit URL` is a fully-qualified GitHub URL pointing to the commit in the fork repository.
+
+### Logging and CLI output
+
+- The project uses the bundled `Logger` helper to capture terminal output and persist it under `./Logs/` as `Logs/main.log`, `Logs/commits_diff.log`, and `Logs/github_api.log` (one per module). During execution, `stdout` and `stderr` are redirected to the logger so both console and file traces are available.
+- Per-fork progress is printed to the terminal (and logged). The tool prints a colored progress line when it begins processing a fork and a line such as:
+
+  `- Exported <N> divergent commits to <OutputsPath>`
+
+  when a CSV is successfully written.
