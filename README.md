@@ -96,3 +96,20 @@ brew install python3  # Using Homebrew
 
 **Windows:**
 Download and install from [python.org](https://www.python.org/downloads/)
+
+### Dependencies
+
+1. Install the project dependencies with the following command:
+
+**Option 1: Using Makefile (Recommended)**
+```bash
+make dependencies
+```
+
+**Option 2: Using pip directly**
+Before running the command below, you need to created (if not already created) and activate a virtual environment:
+```bash
+python -m venv venv
+source venv/bin/activate  # On Windows: venv\Scripts\activate
+pip install -r requirements.txt
+```
