@@ -109,6 +109,28 @@ def verify_filepath_exists(filepath):
     return os.path.exists(filepath)  # Return True if the file or folder exists, False otherwise
 
 
+def parse_repo_url(repo_url):
+    """
+    Parse a GitHub repository URL into (owner, repo).
+
+    :param repo_url: Full repository URL
+    :return: tuple(owner, repo) on success, or None on failure
+    """
+
+    try:  # Normalize and split the URL
+        cleaned = repo_url.rstrip("/\n\r")  # Trim trailing slashes
+        parts = cleaned.split("/")  # Split by slash
+        owner = parts[-2]  # Owner is the penultimate part
+        name = parts[-1]  # Repo is the last part
+        
+        if not owner or not name:  # Validate parts
+            return None  # Invalid
+        
+        return (owner, name)  # Return parsed tuple
+    except Exception:  # Any error indicates parse failure
+        return None  # Signal failure
+
+
 def derive_configuration(args):
     """
     Combine environment variables and CLI arguments into effective configuration.
