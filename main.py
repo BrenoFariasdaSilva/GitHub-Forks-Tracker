@@ -370,13 +370,20 @@ def main():
 
         original_shas = build_original_sha_set(original_commits)  # original_shas = build_original_sha_set(original_commits)
 
-        pbar = tqdm(forks, unit="fork", ncols=80)  # Progress over forks
+        pbar = tqdm(forks, unit="fork", dynamic_ncols=True, file=sys.__stderr__, ncols=80)
         for fork in pbar:  # Iterate over forks
             fork_owner = (fork.get("owner") or {}).get("login") or ""  # Fork Owner
             fork_name = fork.get("name") or ""  # Fork Name
-            pbar.set_description(f"{BackgroundColors.GREEN}{fork_owner}{BackgroundColors.CYAN}/{fork_name}{Style.RESET_ALL}", refresh=True)  # Update desc with owner/repo
-            process_single_fork(api, fork, original_shas, outputs_dir or OUTPUTS_DIR)  # Process the fork and compute divergent commits, saving to CSV if needed
-        pbar.close()  # Close the progress bar after processing all forks
+            # Build a safe, short description to avoid tqdm emitting multiple lines
+            try:
+                rel_path = f"{fork_owner}/{fork_name}"
+            except Exception:
+                rel_path = fork_name or str(fork)
+            if pbar is not None and hasattr(pbar, "set_description"):
+                pbar.set_description(f"{BackgroundColors.GREEN}Processing: {BackgroundColors.CYAN}{rel_path}{Style.RESET_ALL}")
+            process_single_fork(api, fork, original_shas, outputs_dir or OUTPUTS_DIR)  # Process the fork
+        if hasattr(pbar, "close"):
+            pbar.close()  # Close the progress bar after processing all forks
     except Exception as exc:  # Catch and report unexpected errors
         print(f"{BackgroundColors.RED}Unexpected error: {BackgroundColors.YELLOW}{exc}{Style.RESET_ALL}")  # Print error
 
