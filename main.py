@@ -109,6 +109,37 @@ def verify_filepath_exists(filepath):
     return os.path.exists(filepath)  # Return True if the file or folder exists, False otherwise
 
 
+def derive_configuration(args):
+    """
+    Combine environment variables and CLI arguments into effective configuration.
+
+    :param args: argparse.Namespace with CLI arguments
+    :return: tuple(token, original_owner, repo, outputs_dir) or (None, None, None, None) on parse error
+    """
+
+    env_token = os.getenv("GITHUB_TOKEN")  # Token from env
+    env_owner = os.getenv("ORIGINAL_OWNER")  # Owner from env
+    env_repo = os.getenv("REPO")  # Repo from env
+    env_repo_url = os.getenv("REPO_URL")  # Repo URL from env
+
+    token = args.token or env_token  # CLI overrides env for token
+    repo_url = args.repo_url or env_repo_url  # CLI overrides env for repo_url
+    original_owner = args.original_owner or env_owner  # CLI overrides env for owner
+    repo = args.repo or env_repo  # CLI overrides env for repo
+    outputs_dir = args.outputs  # Outputs directory
+
+    if repo_url:  # If a repo URL is provided
+        owner_repo = parse_repo_url(repo_url)  # Extract owner and repo from URL
+        
+        if not owner_repo:  # If parsing failed
+            print(f"{BackgroundColors.RED}Invalid REPO_URL: {BackgroundColors.GREEN}{repo_url}{Style.RESET_ALL}")  # Inform user
+            return (None, None, None, None)  # Signal parse error
+        
+        original_owner, repo = owner_repo  # Unpack parsed values
+
+    return (token, original_owner, repo, outputs_dir)  # Return effective configuration
+
+
 def to_seconds(obj):
     """
     Converts various time-like objects to seconds.
