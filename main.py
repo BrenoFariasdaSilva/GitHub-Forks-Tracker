@@ -224,16 +224,18 @@ def main():
         f"{BackgroundColors.CLEAR_TERMINAL}{BackgroundColors.BOLD}{BackgroundColors.GREEN}Welcome to the {BackgroundColors.CYAN}GitHub Forks Tracker{BackgroundColors.GREEN} Python Project!{Style.RESET_ALL}",
         end="\n",
     )  # Output the welcome message
+    
     start_time = datetime.datetime.now()  # Get the start time of the program
     
     # Implement logic here
 
     finish_time = datetime.datetime.now()  # Get the finish time of the program
+    
     print(
         f"{BackgroundColors.GREEN}Start time: {BackgroundColors.CYAN}{start_time.strftime('%d/%m/%Y - %H:%M:%S')}\n{BackgroundColors.GREEN}Finish time: {BackgroundColors.CYAN}{finish_time.strftime('%d/%m/%Y - %H:%M:%S')}\n{BackgroundColors.GREEN}Execution time: {BackgroundColors.CYAN}{calculate_execution_time(start_time, finish_time)}{Style.RESET_ALL}"
     )  # Output the start and finish times
     print(
-        f"\n{BackgroundColors.BOLD}{BackgroundColors.GREEN}Program finished.{Style.RESET_ALL}"
+        f"{BackgroundColors.BOLD}{BackgroundColors.GREEN}Program finished.{Style.RESET_ALL}"
     )  # Output the end of the program message
     (
         atexit.register(play_sound) if RUN_FUNCTIONS["Play Sound"] else None
