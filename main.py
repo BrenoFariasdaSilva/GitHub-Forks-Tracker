@@ -226,8 +226,56 @@ def main():
     )  # Output the welcome message
     
     start_time = datetime.datetime.now()  # Get the start time of the program
-    
-    # Implement logic here
+
+    dot_env_file = Path(".env")  # Path to .env file
+
+    if not verify_filepath_exists(dot_env_file):  # Verify if .env file exists
+        created = create_env_from_example()  # Attempt to create .env from .env.example
+        if not created:  # If creation failed
+            print(
+                f"{BackgroundColors.RED}Failed to create .env file. Please create it manually based on .env.example and run the program again.{Style.RESET_ALL}"
+            )  # Inform user of failure
+            return  # Exit
+
+    load_dotenv(dot_env_file)  # Load environment variables from .env file
+
+    args = parse_arguments()  # Parse CLI args
+
+    token, original_owner, repo, outputs_dir = derive_configuration(args)  # Derive effective configuration
+
+    if not token or not original_owner or not repo:  # Validate required inputs
+        print(
+            f"{BackgroundColors.RED}Missing required configuration. Provide GITHUB_TOKEN and ORIGINAL_OWNER+REPO or REPO_URL.{Style.RESET_ALL}"
+        )  # Show error message
+        return  # Exit
+
+    try:  # Execute main processing using modular API + diff utilities
+        api = GitHubAPI(token)  # Create API client
+
+        print(f"{BackgroundColors.GREEN}Listing forks for {BackgroundColors.CYAN}{original_owner}{BackgroundColors.GREEN}/{BackgroundColors.CYAN}{repo}{Style.RESET_ALL}")  # print(f"{BackgroundColors.GREEN}Listing forks for {BackgroundColors.CYAN}{original_owner}{BackgroundColors.GREEN}/{BackgroundColors.CYAN}{repo}{Style.RESET_ALL}")
+        try:  # try:
+            forks = api.list_forks(original_owner, repo)  # forks = api.list_forks(original_owner, repo)
+        except Exception as exc:  # except Exception as exc:
+            print(f"{BackgroundColors.RED}Failed to list forks: {BackgroundColors.YELLOW}{exc}{Style.RESET_ALL}")  # print(f"{BackgroundColors.RED}Failed to list forks: {BackgroundColors.YELLOW}{exc}{Style.RESET_ALL}")
+            return  # return
+
+        if not forks:  # if not forks:
+            print(f"{BackgroundColors.YELLOW}No forks found for {BackgroundColors.CYAN}{original_owner}{BackgroundColors.GREEN}/{BackgroundColors.CYAN}{repo}{Style.RESET_ALL}")  # print(f"{BackgroundColors.YELLOW}No forks found for {BackgroundColors.CYAN}{original_owner}{BackgroundColors.GREEN}/{BackgroundColors.CYAN}{repo}{Style.RESET_ALL}")
+            return  # return
+
+        print(f"{BackgroundColors.GREEN}Collecting commits from original repository {BackgroundColors.CYAN}{original_owner}/{repo}{BackgroundColors.GREEN}...{Style.RESET_ALL}")  # print(f"{BackgroundColors.GREEN}Collecting commits from original repository...{Style.RESET_ALL}")
+        try:  # try:
+            original_commits = api.list_commits(original_owner, repo)  # original_commits = api.list_commits(original_owner, repo)
+        except Exception as exc:  # except Exception as exc:
+            print(f"{BackgroundColors.RED}Failed to fetch original commits: {BackgroundColors.YELLOW}{exc}{Style.RESET_ALL}")  # print(f"{BackgroundColors.RED}Failed to fetch original commits: {BackgroundColors.YELLOW}{exc}{Style.RESET_ALL}")
+            return  # return
+
+        original_shas = build_original_sha_set(original_commits)  # original_shas = build_original_sha_set(original_commits)
+
+        for fork in forks:  # for fork in forks:
+            process_single_fork(api, fork, original_shas, outputs_dir or OUTPUTS_DIR)  # process_single_fork(api, fork, original_shas, outputs_dir or OUTPUTS_DIR)
+    except Exception as exc:  # Catch and report unexpected errors
+        print(f"{BackgroundColors.RED}Unexpected error: {BackgroundColors.YELLOW}{exc}{Style.RESET_ALL}")  # Print error
 
     finish_time = datetime.datetime.now()  # Get the finish time of the program
     
