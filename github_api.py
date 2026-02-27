@@ -71,6 +71,34 @@ RUN_FUNCTIONS = {
     "Play Sound": True,  # Set to True to play a sound when the program finishes
 }
 
+
+# Classes Definitions:
+
+
+class GitHubAPI:
+    """
+    Minimal GitHub REST API client with pagination and retry logic.
+
+    :param token: Personal access token for GitHub API authentication
+    :return: None
+    """
+
+    def __init__(self, token: str) -> None:
+        """
+        Initialize the GitHubAPI client with an optional token for authentication.
+        
+        :param token: Personal access token for GitHub API authentication
+        :return: None
+        """
+        
+        self.session = requests.Session()  # Create a requests session
+        
+        if token:  # If token provided
+            self.session.headers.update({"Authorization": f"Bearer {token}"})  # Set auth header
+        
+        self.session.headers.update({"Accept": "application/vnd.github.v3+json"})  # Use REST v3
+
+
 # Functions Definitions:
 
 
