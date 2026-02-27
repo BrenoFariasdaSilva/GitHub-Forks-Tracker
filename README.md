@@ -135,12 +135,12 @@ Discuss the results obtained in the project.
 If you use the GitHub-Forks-Tracker in your research, please cite it using the following BibTeX entry:
 
 ```
-@misc{softwareGitHub-Forks-Tracker:2024,
+@misc{softwareGitHub-Forks-Tracker:2026,
   title = {GitHub-Forks-Tracker: Project-Description},
   author = {Breno Farias da Silva},
-  year = {2024},
+  year = {2026},
   howpublished = {https://github.com/BrenoFariasdaSilva/GitHub-Forks-Tracker},
-  note = {Accessed on September 11, 2024}
+  note = {Accessed on September 11, 2026}
 }
 ```
 
