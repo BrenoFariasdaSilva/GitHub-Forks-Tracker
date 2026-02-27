@@ -41,6 +41,7 @@ from dotenv import load_dotenv  # Load .env file when needed
 from github_api import GitHubAPI  # Core HTTP client for GitHub REST API
 from Logger import Logger  # For logging output to both terminal and file
 from pathlib import Path  # For handling file paths
+from tqdm import tqdm  # For progress bars
 
 
 # Macros:
@@ -369,8 +370,13 @@ def main():
 
         original_shas = build_original_sha_set(original_commits)  # original_shas = build_original_sha_set(original_commits)
 
-        for fork in forks:  # for fork in forks:
-            process_single_fork(api, fork, original_shas, outputs_dir or OUTPUTS_DIR)  # process_single_fork(api, fork, original_shas, outputs_dir or OUTPUTS_DIR)
+        pbar = tqdm(forks, unit="fork", ncols=80)  # Progress over forks
+        for fork in pbar:  # Iterate over forks
+            fork_owner = (fork.get("owner") or {}).get("login") or ""  # Fork Owner
+            fork_name = fork.get("name") or ""  # Fork Name
+            pbar.set_description(f"{BackgroundColors.GREEN}{fork_owner}{BackgroundColors.CYAN}/{fork_name}{Style.RESET_ALL}", refresh=True)  # Update desc with owner/repo
+            process_single_fork(api, fork, original_shas, outputs_dir or OUTPUTS_DIR)  # Process the fork and compute divergent commits, saving to CSV if needed
+        pbar.close()  # Close the progress bar after processing all forks
     except Exception as exc:  # Catch and report unexpected errors
         print(f"{BackgroundColors.RED}Unexpected error: {BackgroundColors.YELLOW}{exc}{Style.RESET_ALL}")  # Print error
 
