@@ -182,6 +182,23 @@ class GitHubAPI:
         return resp.headers.get("Link")  # Return Link header
 
 
+    def parse_next_url(self, link_header: str) -> typing.Optional[str]:
+        """
+        Parse a Link header and return the URL for rel="next" if available.
+
+        :param link_header: The Link header string
+        :return: Next page URL or None
+        """
+
+        parts = link_header.split(",")  # Split link parts
+        
+        for part in parts:  # Iterate parts
+            if 'rel="next"' in part:  # Next link found
+                return part.split(";")[0].strip()[1:-1]  # Extract and return URL
+        
+        return None  # No next link
+
+
 # Functions Definitions:
 
 
