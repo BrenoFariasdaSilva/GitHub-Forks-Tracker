@@ -8,7 +8,7 @@
   
 ---
 
-Project-Description.
+A lightweight CLI framework to analyze GitHub forks, detect divergent commits, and export results to CSV via the GitHub REST API.
   
 ---
 
@@ -136,7 +136,7 @@ If you use the GitHub-Forks-Tracker in your research, please cite it using the f
 
 ```
 @misc{softwareGitHub-Forks-Tracker:2026,
-  title = {GitHub-Forks-Tracker: Project-Description},
+  title = {GitHub-Forks-Tracker: A lightweight CLI framework to analyze GitHub forks, detect divergent commits, and export results to CSV via the GitHub REST API},
   author = {Breno Farias da Silva},
   year = {2026},
   howpublished = {https://github.com/BrenoFariasdaSilva/GitHub-Forks-Tracker},
