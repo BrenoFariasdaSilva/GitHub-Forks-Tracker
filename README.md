@@ -140,7 +140,7 @@ If you use the GitHub-Forks-Tracker in your research, please cite it using the f
   author = {Breno Farias da Silva},
   year = {2026},
   howpublished = {https://github.com/BrenoFariasdaSilva/GitHub-Forks-Tracker},
-  note = {Accessed on September 11, 2026}
+  note = {Accessed on February 27, 2026}
 }
 ```
 
