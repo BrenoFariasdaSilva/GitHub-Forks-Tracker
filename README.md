@@ -170,3 +170,11 @@ The tool produces CSV files in the specified output directory, one per fork that
 - Rate-limits: the client reads `X-RateLimit-Remaining` and `X-RateLimit-Reset` from responses and detects a rate-limited response (403 with remaining == "0"). The client computes the seconds until reset and waits the required time before continuing.
 - Retry/backoff: transient server errors (5xx) are retried with a backoff strategy (the client implements retry loops and delays for robustness).
 - Requests are executed using a `requests.Session()` with a default timeout (20s) and the `Accept: application/vnd.github.v3+json` header.
+
+### Modular responsibilities
+
+- `github_api.py`: encapsulates HTTP behaviour (session management, header configuration, paginated fetches, `Link` header parsing, rate-limit wait computation, and 5xx retry/backoff logic). Use `GitHubAPI` to call `list_forks(owner, repo)` and `list_commits(owner, repo)`.
+- `commits_diff.py`: contains the core diffing logic that builds a set of original repository SHAs (`build_original_sha_set`), identifies divergent commits while preserving chronological order (oldest → newest), and writes CSV exports (`export_commits_csv`). It also exposes `process_single_fork` used by the CLI orchestration.
+- `main.py`: CLI entrypoint that loads `.env`, parses CLI args, derives effective configuration (CLI > .env precedence), instantiates `GitHubAPI`, fetches forks and original commits, and dispatches fork processing.
+
+This README reflects the implemented CLI behaviour, logging, CSV exports, API pagination, and rate-limit handling present in the codebase.
