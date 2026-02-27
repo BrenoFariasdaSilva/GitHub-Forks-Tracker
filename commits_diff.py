@@ -27,11 +27,14 @@ Assumptions & Notes:
 
 
 import atexit  # For playing a sound when the program finishes
+import csv  # Local import for CSV writing
 import datetime  # For getting the current date and time
 import os  # For running a command in the terminal
 import platform  # For getting the operating system name
 import sys  # For system-specific parameters and functions
+import typing  # For type hints
 from colorama import Style  # For coloring the terminal
+from github_api import GitHubAPI  # Imported for type checking only to avoid runtime import cycles
 from Logger import Logger  # For logging output to both terminal and file
 from pathlib import Path  # For handling file paths
 
