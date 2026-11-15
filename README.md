@@ -26,7 +26,6 @@
 ![GitHub Contributors](https://img.shields.io/github/contributors/BrenoFariasdaSilva/GitHub-Forks-Tracker)
 ![GitHub Created At](https://img.shields.io/github/created-at/BrenoFariasdaSilva/GitHub-Forks-Tracker)
 ![wakatime](https://wakatime.com/badge/github/BrenoFariasdaSilva/GitHub-Forks-Tracker.svg)
-[![GitHub Repository Size](https://img.shields.io/github/repo-size/BrenoFariasdaSilva/GitHub-Forks-Tracker)](https://github.com/BrenoFariasdaSilva/GitHub-Forks-Tracker)
 [![Open Issues](https://img.shields.io/github/issues/BrenoFariasdaSilva/GitHub-Forks-Tracker)](https://github.com/BrenoFariasdaSilva/GitHub-Forks-Tracker/issues)
 [![Closed Issues](https://img.shields.io/github/issues-closed/BrenoFariasdaSilva/GitHub-Forks-Tracker)](https://github.com/BrenoFariasdaSilva/GitHub-Forks-Tracker/issues?q=is%3Aissue+is%3Aclosed)
 [![Open Pull Requests](https://img.shields.io/github/issues-pr/BrenoFariasdaSilva/GitHub-Forks-Tracker)](https://github.com/BrenoFariasdaSilva/GitHub-Forks-Tracker/pulls)
