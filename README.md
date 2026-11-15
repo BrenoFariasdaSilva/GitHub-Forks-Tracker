@@ -30,10 +30,30 @@
 </div>
 
 <div align="center">
-  
-![RepoBeats Statistics](https://repobeats.axiom.co/api/embed/a22ecc5feb500a6640faf46ff140ad205ee29952.svg "Repobeats analytics image")
+
+![GitHub Code Size in Bytes](https://img.shields.io/github/languages/code-size/BrenoFariasdaSilva/GitHub-Forks-Tracker)
+![GitHub Commits](https://img.shields.io/github/commit-activity/t/BrenoFariasdaSilva/GitHub-Forks-Tracker/main)
+![GitHub Last Commit](https://img.shields.io/github/last-commit/BrenoFariasdaSilva/GitHub-Forks-Tracker)
+![GitHub Forks](https://img.shields.io/github/forks/BrenoFariasdaSilva/GitHub-Forks-Tracker)
+![GitHub Language Count](https://img.shields.io/github/languages/count/BrenoFariasdaSilva/GitHub-Forks-Tracker)
+![GitHub License](https://img.shields.io/github/license/BrenoFariasdaSilva/GitHub-Forks-Tracker)
+![GitHub Stars](https://img.shields.io/github/stars/BrenoFariasdaSilva/GitHub-Forks-Tracker)
+![GitHub Contributors](https://img.shields.io/github/contributors/BrenoFariasdaSilva/GitHub-Forks-Tracker)
+![GitHub Created At](https://img.shields.io/github/created-at/BrenoFariasdaSilva/GitHub-Forks-Tracker)
+![wakatime](https://wakatime.com/badge/github/BrenoFariasdaSilva/GitHub-Forks-Tracker.svg)
+[![GitHub Repository Size](https://img.shields.io/github/repo-size/BrenoFariasdaSilva/GitHub-Forks-Tracker)](https://github.com/BrenoFariasdaSilva/GitHub-Forks-Tracker)
+[![Open Issues](https://img.shields.io/github/issues/BrenoFariasdaSilva/GitHub-Forks-Tracker)](https://github.com/BrenoFariasdaSilva/GitHub-Forks-Tracker/issues)
+[![Closed Issues](https://img.shields.io/github/issues-closed/BrenoFariasdaSilva/GitHub-Forks-Tracker)](https://github.com/BrenoFariasdaSilva/GitHub-Forks-Tracker/issues?q=is%3Aissue+is%3Aclosed)
+[![Open Pull Requests](https://img.shields.io/github/issues-pr/BrenoFariasdaSilva/GitHub-Forks-Tracker)](https://github.com/BrenoFariasdaSilva/GitHub-Forks-Tracker/pulls)
+[![Closed Pull Requests](https://img.shields.io/github/issues-pr-closed/BrenoFariasdaSilva/GitHub-Forks-Tracker)](https://github.com/BrenoFariasdaSilva/GitHub-Forks-Tracker/pulls?q=is%3Apr+is%3Aclosed)
+[![Monthly Commits](https://img.shields.io/github/commit-activity/m/BrenoFariasdaSilva/GitHub-Forks-Tracker/main)](https://github.com/BrenoFariasdaSilva/GitHub-Forks-Tracker/commits)
+[![Merged PRs](https://img.shields.io/github/issues-search/BrenoFariasdaSilva/GitHub-Forks-Tracker?query=is%3Apr%20is%3Amerged&label=merged%20PRs&color=blue)](https://github.com/BrenoFariasdaSilva/GitHub-Forks-Tracker/pulls?q=is%3Apr+is%3Amerged)
+![GitHub Primary Language](https://img.shields.io/badge/language-Python-3b82f6)
+
+![Repobeats Statistics](https://repobeats.axiom.co/api/embed/a22ecc5feb500a6640faf46ff140ad205ee29952.svg)
 
 </div>
+
 
 ## Table of Contents
 - [GitHub-Forks-Tracker. ](#github-forks-tracker-)
